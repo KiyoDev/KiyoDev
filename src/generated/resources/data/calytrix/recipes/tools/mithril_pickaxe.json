@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "i": {
+      "tag": "c:mithril_ingots"
+    },
+    "s": {
+      "tag": "c:wooden_rods"
+    }
+  },
+  "pattern": [
+    "iii",
+    " s ",
+    " s "
+  ],
+  "result": {
+    "item": "calytrix:mithril_pickaxe"
+  }
+}

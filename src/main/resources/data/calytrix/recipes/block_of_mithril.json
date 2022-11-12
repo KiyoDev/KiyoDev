@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "xxx",
+    "xxx",
+    "xxx"
+  ],
+  "key": {
+    "x": {
+      "item": "calytrix:mithril_ingot"
+    }
+  },
+  "result": {
+    "item": "calytrix:block_of_mithril"
+  }
+}

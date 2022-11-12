@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": { 
+      "model": "calytrix:block/block_of_mithril"
+    }
+  }
+}

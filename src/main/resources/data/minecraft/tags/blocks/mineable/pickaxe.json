@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "calytrix:block_of_adamantine",
+    "calytrix:block_of_raw_adamantine",
+    "calytrix:deepslate_adamantine_ore"
+  ]
+}

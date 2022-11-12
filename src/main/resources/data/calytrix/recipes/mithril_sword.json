@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " x ",
+    " x ",
+    " l "
+  ],
+  "key": {
+    "x": {
+      "item": "calytrix:mithril_ingot"
+    },
+    "l": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "calytrix:mithril_sword"
+  }
+}
