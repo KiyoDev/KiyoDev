@@ -1,13 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_adamantine_ingot": {
+    "has_ingots/adamantine": {
       "conditions": {
         "items": [
           {
-            "items": [
-              "calytrix:adamantine_ingot"
-            ]
+            "tag": "forge:ingots/adamantine"
           }
         ]
       },
@@ -22,7 +20,7 @@
   },
   "requirements": [
     [
-      "has_adamantine_ingot",
+      "has_ingots/adamantine",
       "has_the_recipe"
     ]
   ],

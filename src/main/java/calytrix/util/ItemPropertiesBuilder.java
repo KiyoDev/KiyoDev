@@ -29,11 +29,10 @@ public class ItemPropertiesBuilder {
         return new ItemPropertiesBuilder();
     }
     
-        
+    
     public Properties build() {
         Properties props = new Properties().tab(tab)
-                                           .rarity(rarity)
-                                           .durability(maxDamage);
+                                           .rarity(rarity);
         
         if (fireResistant) {
             props = props.fireResistant();
@@ -43,15 +42,19 @@ public class ItemPropertiesBuilder {
             props = props.setNoRepair();
         }
         
+        if (maxDamage > 0) {
+            props = props.durability(maxDamage);
+        }
+        
         if (maxStackSize != 64) {
             props = props.stacksTo(maxStackSize);
         }
         
-        if(foodProperties != null) {
+        if (foodProperties != null) {
             props = props.food(foodProperties);
         }
         
-        if(craftingRemainingItem != null) {
+        if (craftingRemainingItem != null) {
             props = props.craftRemainder(craftingRemainingItem);
         }
         

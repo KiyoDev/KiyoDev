@@ -1,14 +1,11 @@
 package calytrix.providers.tags;
 
+import net.minecraft.data.DataGenerator;
+import net.minecraftforge.common.data.ExistingFileHelper;
+
+import calytrix.block.CalytrixBlocks;
 import calytrix.item.CalytrixItems;
 import calytrix.util.ModTags;
-import net.minecraft.core.Registry;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.tags.BlockTagsProvider;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.ItemLike;
-import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
     public ItemTagsProvider(
@@ -22,13 +19,20 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
     
     @Override
     protected void addTags() {
-        forgeTags();
+        resourceIngotsTags();
     }
     
-    private void forgeTags() {
-        tag(ModTags.Items.ADAMANTINE_INGOT)
-            .add(CalytrixItems.ADAMANTINE_INGOT.get());
-        tag(ModTags.Items.MITHRIL_INGOT)
-            .add(CalytrixItems.MITHRIL_INGOT.get());
+    private void resourceIngotsTags() {
+        final var ingots = CalytrixItems.getResourceIngots();
+        final var resourceForgeTagsByType = ModTags.Items.resourceForgeTagsByType();
+    
+        ingots.forEach((type, ingot) -> tag(resourceForgeTagsByType.get(type)).add(ingot.getItem().get()));
     }
+    
+    // private void forgeTags() {
+    //     tag(ModTags.Items.ADAMANTINE_INGOT)
+    //         .add(CalytrixItems.ADAMANTINE_INGOT.get());
+    //     tag(ModTags.Items.MITHRIL_INGOT)
+    //         .add(CalytrixItems.MITHRIL_INGOT.get());
+    // }
 }
