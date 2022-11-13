@@ -2,10 +2,10 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "i": {
-      "tag": "c:mithril_ingots"
+      "tag": "forge:ingots/mithril"
     },
     "s": {
-      "tag": "c:wooden_rods"
+      "tag": "forge:rods/wooden"
     }
   },
   "pattern": [

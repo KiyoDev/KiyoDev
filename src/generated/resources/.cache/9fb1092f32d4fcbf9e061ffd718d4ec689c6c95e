@@ -1,11 +1,11 @@
-// 1.19.2	2022-11-11T16:02:49.3148521	Recipes
-83c5b07620ff383f88309bdc74dc4b5454cd3fdf data/calytrix/advancements/recipes/calytrix/tools/adamantine_axe.json
-09bc45576ed0baaef8dcf7f46e8060c2aae739f5 data/calytrix/advancements/recipes/calytrix/tools/adamantine_hoe.json
-6041eb0df449414bc158596f315e60e848f3f4f3 data/calytrix/advancements/recipes/calytrix/tools/adamantine_pickaxe.json
-3513f16cd34011bdbc380961cc8a02dfd11dd27f data/calytrix/advancements/recipes/calytrix/tools/adamantine_shovel.json
-aeb9b0c7d9b434f9ef25fed50f7c03c63a4b4a08 data/calytrix/advancements/recipes/calytrix/tools/adamantine_sword.json
-04050c71d36a6bd32b6938988bea185bec024147 data/calytrix/recipes/tools/adamantine_axe.json
-2f5a0f945637f088dae413f4b4a21a54a944e03e data/calytrix/recipes/tools/adamantine_hoe.json
-5f4f5803138ab8c8ba6d220e4796f1fcf8b3e2d7 data/calytrix/recipes/tools/adamantine_pickaxe.json
-4116f3b2fde1688d01775f20dcf9cb03a848fc76 data/calytrix/recipes/tools/adamantine_shovel.json
-d3cf3ddc8bca889da36926afd1e6e8faa5b8eee1 data/calytrix/recipes/tools/adamantine_sword.json
+// 1.19.2	2022-11-13T18:54:08.7737489	Recipes
+91de991bf65184f23cbbb703d8c659de05338cf4 data/calytrix/advancements/recipes/calytrix/tools/mithril_axe.json
+03448c855f856866509c3de7cafb24bf313e37b0 data/calytrix/advancements/recipes/calytrix/tools/mithril_hoe.json
+0a2205fc5aebd09a45c5a4ac4f4a9f9b67399346 data/calytrix/advancements/recipes/calytrix/tools/mithril_pickaxe.json
+66d9a1075b7cb093e776a8d42f61fa95910c8203 data/calytrix/advancements/recipes/calytrix/tools/mithril_shovel.json
+35125b317d639160523feaf34827c3cacf17ff8e data/calytrix/advancements/recipes/calytrix/tools/mithril_sword.json
+7087254c5bcb1ab4ce95fa0dd99426b9a94f539b data/calytrix/recipes/tools/mithril_axe.json
+cbdeb500c085ebb0540b03aa9fd8acf125b6630c data/calytrix/recipes/tools/mithril_hoe.json
+c068804dbb5909abfb5e9f7b61c63e5f4bbbb6b3 data/calytrix/recipes/tools/mithril_pickaxe.json
+900a5c4ed8b647e752c09812e9acbe770a7fbb1a data/calytrix/recipes/tools/mithril_shovel.json
+10a1680dc8cf917ad604e83279c51fcf31b0dcf3 data/calytrix/recipes/tools/mithril_sword.json

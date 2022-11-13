@@ -8,6 +8,6 @@ public class CalytrixRegistry {
     
     public void register(IEventBus eventBus) {
         CalytrixItems.register(eventBus);
-        CalytrixBlocks.register(eventBus);
+        // CalytrixBlocks.register(eventBus);
     }
 }

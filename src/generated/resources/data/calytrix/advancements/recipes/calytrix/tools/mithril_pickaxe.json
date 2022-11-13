@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_mithril_ingots": {
+    "has_ingots/mithril": {
       "conditions": {
         "items": [
           {
-            "tag": "c:mithril_ingots"
+            "tag": "forge:ingots/mithril"
           }
         ]
       },
@@ -20,7 +20,7 @@
   },
   "requirements": [
     [
-      "has_mithril_ingots",
+      "has_ingots/mithril",
       "has_the_recipe"
     ]
   ],

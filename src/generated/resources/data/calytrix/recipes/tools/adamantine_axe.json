@@ -1,7 +1,7 @@
 {
   "type": "minecraft:smithing",
   "addition": {
-    "item": "calytrix:adamantine_ingot"
+    "tag": "forge:ingots/adamantine"
   },
   "base": {
     "item": "minecraft:netherite_axe"

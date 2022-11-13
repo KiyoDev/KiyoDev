@@ -1,5 +1,7 @@
 package calytrix;
 
+import calytrix.block.CalytrixBlocks;
+import calytrix.item.CalytrixItems;
 import calytrix.registry.CalytrixRegistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -56,10 +58,13 @@ public class Calytrix {
         // ITEMS.register(modEventBus);
         // ITEM_REGISTRY.register(modEventBus);
         
-        REGISTRY.register(modEventBus);
+        // REGISTRY.register(modEventBus);
         
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+    
+        CalytrixBlocks.register(modEventBus);
+        CalytrixItems.register(modEventBus);
     }
     
     public static ResourceLocation resourceLocation(String name) {
