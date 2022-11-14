@@ -5,6 +5,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.material.Material;
 
+import calytrix.item.ItemPropertiesBuilder;
+
 public interface IBlockData {
     float getStrength();
     

@@ -1,0 +1,11 @@
+// 1.19.2	2022-11-14T18:53:02.0773174	Tags for minecraft:item
+349f4229a3e056fc29e2a378e8ee12ab799007a7 data/forge/tags/items/ingots.json
+700144cf241aaaf823f34dc9ea3d7643c527b831 data/forge/tags/items/ingots/adamantine.json
+9bb9d8de59d2ac32d208a7105d9a555887671056 data/forge/tags/items/ingots/mithril.json
+152c6f2386d0fd7f4e0582c9f425292d2660c0d3 data/forge/tags/items/ores.json
+3e2eb5482e489b46f2be48339d6b86a450e18f5f data/forge/tags/items/ores/adamantine.json
+e539d2f8817a05c41ac05dd6c9819775fdaa44e8 data/forge/tags/items/ores/mithril.json
+152c6f2386d0fd7f4e0582c9f425292d2660c0d3 data/forge/tags/items/ores_in_ground/deepslate.json
+56ee52f1de97f82a060495597a304af098ab7a9e data/forge/tags/items/storage_blocks.json
+c12031d5da4007487c8a283f29a3469497a5a0a7 data/forge/tags/items/storage_blocks/adamantine.json
+e6134550bcc301991946691251ef8e8d94232485 data/forge/tags/items/storage_blocks/mithril.json

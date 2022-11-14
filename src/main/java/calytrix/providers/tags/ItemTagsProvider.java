@@ -1,13 +1,20 @@
 package calytrix.providers.tags;
 
 import net.minecraft.data.DataGenerator;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 import calytrix.block.CalytrixBlocks;
-import calytrix.block.ores.BlockOreType;
 import calytrix.item.CalytrixItems;
+import calytrix.item.resources.ResourceType;
+import calytrix.util.IItemRegistryObject;
+import calytrix.util.IResource;
 import calytrix.util.ModTags;
+import org.apache.logging.log4j.util.TriConsumer;
+
+import java.util.Map;
 
 public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
     public ItemTagsProvider(
@@ -23,50 +30,43 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
     protected void addTags() {
         resourceIngotsTags();
         resourceStorageBlockItemTags();
+        oreBlockItemTags();
     }
     
     private void resourceIngotsTags() {
-        final var ingots = CalytrixItems.getResourceIngots();
-        final var resourceForgeTagsByType = ModTags.Items.resourceIngotsTagsByType();
-        
-        ingots.forEach((data, ingot) -> {
-            final var item = ingot.getItem().get();
-            final var type = data.resourceType();
-            final var tag = resourceForgeTagsByType.get(type);
-            
-            tag(tag).add(item);
-        });
+        addTags(CalytrixItems.getResourceIngots(), ModTags.Items.resourceIngotsTagsByType(),
+                (data, itemObj, item) -> tag(Tags.Items.INGOTS).add(item));
     }
     
     private void resourceStorageBlockItemTags() {
-        final var blocks = CalytrixBlocks.getResourceStorageBlocks();
-        final var storageBlocksTagsByType = ModTags.Items.resourceStorageBlocksTagsByType();
-        
-        blocks.forEach((data, block) -> {
-            final var blockItem = block.getItem().get();
-            final var type = data.getResourceType();
-            final var tag = storageBlocksTagsByType.get(type);
-            
-            tag(tag).add(blockItem);
-            tag(Tags.Items.STORAGE_BLOCKS).add(blockItem);
-        });
+        addTags(CalytrixBlocks.getResourceStorageBlocks(), ModTags.Items.resourceStorageBlocksTagsByType(),
+                (data, itemObj, blockItem) -> tag(Tags.Items.STORAGE_BLOCKS).add(blockItem));
     }
     
     private void oreBlockItemTags() {
-        final var ores = CalytrixBlocks.getOreBlocks();
-        final var oreTagsByType = ModTags.Items.oreBlocksTagsByType();
-        
-        ores.forEach((data, block) -> {
-            final var blockItem = block.getItem().get();
-            final var type = data.resourceType();
-            final var tag = oreTagsByType.get(type);
+        addTags(CalytrixBlocks.getOreBlocks(), ModTags.Items.oreBlocksTagsByType(), (data, itemObj, blockItem) -> {
+            final var blockObj = itemObj.getBlockObj();
+            final var ore = blockObj.get();
+            final var oreType = ore.getOreType();
             
-            tag(tag).add(blockItem);
             tag(Tags.Items.ORES).add(blockItem);
+            tag(oreType.getInGroundTag()).add(blockItem);
+        });
+    }
     
-            for (BlockOreType oreType : data.getTypes()) {
-                tag(oreType.getInGroundTag()).add(blockItem);
-            }
+    private <DATA extends IResource, ITEM extends Item, OBJ extends IItemRegistryObject<ITEM>> void addTags(
+        Map<DATA, OBJ> items,
+        Map<ResourceType, TagKey<Item>> tagsByType,
+        TriConsumer<DATA, OBJ, ITEM> consumer
+    ) {
+        items.forEach((data, itemObj) -> {
+            final var item = itemObj.getItem();
+            final var type = data.getResourceType();
+            final var tag = tagsByType.get(type);
+            
+            tag(tag).add(item);
+            
+            consumer.accept(data, itemObj, item);
         });
     }
 }

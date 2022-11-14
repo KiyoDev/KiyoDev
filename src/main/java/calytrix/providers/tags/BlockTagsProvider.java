@@ -29,6 +29,6 @@ public class BlockTagsProvider extends net.minecraft.data.tags.BlockTagsProvider
         final var blocks = CalytrixBlocks.getResourceStorageBlocks();
         final var resourceForgeTagsByType = ModTags.Blocks.resourceForgeTagsByType();
         
-        blocks.forEach((type, block) -> tag(resourceForgeTagsByType.get(type)).add(block.getBlock().get()));
+        blocks.forEach((type, block) -> tag(resourceForgeTagsByType.get(type)).add(block.getBlockObj().get()));
     }
 }

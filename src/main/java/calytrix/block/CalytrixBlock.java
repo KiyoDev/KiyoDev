@@ -2,7 +2,6 @@ package calytrix.block;
 
 import net.minecraft.world.level.block.Block;
 
-import calytrix.util.BlockProperties;
 import calytrix.util.IBlockData;
 
 public abstract class CalytrixBlock extends Block {

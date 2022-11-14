@@ -1,12 +1,12 @@
-package calytrix.util;
-
-import lombok.Getter;
+package calytrix.item;
 
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.item.Rarity;
+
+import calytrix.util.CalytrixConstants;
 
 import javax.annotation.Nullable;
 
@@ -29,6 +29,14 @@ public class ItemPropertiesBuilder {
         return new ItemPropertiesBuilder();
     }
     
+    public static Properties defaultStackableProperties() {
+        return new Properties().tab(CalytrixConstants.CALYTRIX_TAB);
+    }
+    
+    public static Properties defaultUnstackableProperties() {
+        return new Properties().tab(CalytrixConstants.CALYTRIX_TAB)
+                               .stacksTo(1);
+    }
     
     public Properties build() {
         Properties props = new Properties().tab(tab)

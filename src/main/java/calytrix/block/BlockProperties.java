@@ -1,4 +1,4 @@
-package calytrix.util;
+package calytrix.block;
 
 import lombok.Getter;
 

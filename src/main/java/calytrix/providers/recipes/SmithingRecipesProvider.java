@@ -33,7 +33,7 @@ public class SmithingRecipesProvider extends CalytrixRecipeProvider {
     
     private static void buildAdamantineRecipes(Consumer<FinishedRecipe> consumer) {
         final var ingotTags = ModTags.Items.resourceIngotsTagsByType();
-        var adamantineTag = ingotTags.get(ItemResourceIngotData.ADAMANTINE.resourceType());
+        var adamantineTag = ingotTags.get(ItemResourceIngotData.ADAMANTINE.getResourceType());
         
         buildRecipe(consumer, Items.NETHERITE_PICKAXE, adamantineTag, CalytrixItems.ADAMANTINE_PICKAXE);
         buildRecipe(consumer, Items.NETHERITE_AXE, adamantineTag, CalytrixItems.ADAMANTINE_AXE);

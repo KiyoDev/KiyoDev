@@ -11,13 +11,21 @@ import net.minecraft.world.level.material.Material;
 
 import calytrix.block.resources.BlockResourceData;
 import calytrix.item.resources.ResourceType;
+import calytrix.item.tools.ToolTierType;
 import calytrix.util.IBlockData;
+import calytrix.util.IResource;
+
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @Getter
 @RequiredArgsConstructor
-public enum BlockOreData implements IBlockData {
+public enum BlockOreData implements IBlockData, IResource {
     ADAMANTINE(BlockResourceData.ADAMANTINE, 10, 25, Material.STONE, Rarity.RARE, true, true, new BlockOreType[]{DEEPSLATE}),
     MITHRIL(BlockResourceData.MITHRIL, 6, 9, Material.STONE, Rarity.RARE, false, true, new BlockOreType[]{STONE, DEEPSLATE});
+    
+    private static final Map<ResourceType, BlockOreData> STORAGE_BLOCK_BY_RESOURCE_TYPE = init();
     
     private final BlockResourceData blockResource;
     private final float strength;
@@ -47,7 +55,17 @@ public enum BlockOreData implements IBlockData {
         return blockResource.getResourceType().getResourceName();
     }
     
-    public ResourceType resourceType() {
+    @Override
+    public ResourceType getResourceType() {
         return blockResource.getResourceType();
+    }
+    
+    private static Map<ResourceType, BlockOreData> init() {
+        final Map<ResourceType, BlockOreData> map = new LinkedHashMap<>();
+        for(var block : BlockOreData.values()) {
+            map.put(block.blockResource.getResourceType(), block);
+        }
+        
+        return Collections.unmodifiableMap(map);
     }
 }

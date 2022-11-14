@@ -4,15 +4,21 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.RegistryObject;
+
+import calytrix.util.IItemRegistryObject;
 
 @Getter
 @RequiredArgsConstructor
-public class ItemRegistryObject<ITEM extends Item> {
-    private final RegistryObject<ITEM> item;
+public class ItemRegistryObject<ITEM extends Item> implements IItemRegistryObject<ITEM> {
+    private final RegistryObject<ITEM> itemObj;
     
     public String registry() {
-        return item.getId().getPath();
+        return itemObj.getId().getPath();
+    }
+    
+    @Override
+    public ITEM getItem() {
+        return itemObj.get();
     }
 }

@@ -11,12 +11,13 @@ import net.minecraft.world.item.Rarity;
 import calytrix.block.resources.BlockResourceData;
 import calytrix.util.CalytrixRarity;
 import calytrix.util.IItemData;
+import calytrix.util.IResource;
 
 import javax.annotation.Nullable;
 
 @Getter
 @RequiredArgsConstructor
-public enum ItemResourceIngotData implements IItemData {
+public enum ItemResourceIngotData implements IItemData, IResource {
     ADAMANTINE(BlockResourceData.ADAMANTINE, CalytrixRarity.LEGENDARY, true),
     MITHRIL(BlockResourceData.MITHRIL, Rarity.RARE, false);
     
@@ -44,7 +45,8 @@ public enum ItemResourceIngotData implements IItemData {
         return blockResourceData.resourceName();
     }
     
-    public ResourceType resourceType() {
+    @Override
+    public ResourceType getResourceType() {
         return blockResourceData.getResourceType();
     }
 }
