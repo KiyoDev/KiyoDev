@@ -2,11 +2,14 @@ package calytrix.item.tools;
 
 import net.minecraft.world.item.SwordItem;
 
-import calytrix.material.BaseMaterial;
+import calytrix.material.EquipmentMaterial;
 
-public class BaseSwordItem<MAT extends BaseMaterial> extends SwordItem {
+public class BaseSwordItem extends SwordItem {
     
-    public BaseSwordItem(MAT material) {
-        super(material.getTier(), material.swordAttackDamage(), material.swordAttackSpeed(), material.toolProperties());
+    public <MAT extends EquipmentMaterial> BaseSwordItem(MAT material) {
+        super(material.getStats().getTier(),
+              material.getStats().swordAttackDamage(),
+              material.getStats().swordAttackSpeed(),
+              material.getStats().toolProperties());
     }
 }

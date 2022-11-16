@@ -20,7 +20,7 @@ import java.util.List;
 public enum ResourceType {
     
     ADAMANTINE("adamantine", List.of(Tiers.NETHERITE), List.of()),
-    ORICHALCUM("orichalum", List.of(Tiers.NETHERITE), List.of(ToolTierType.ADAMANTINE.getTier())),
+    ORICHALCUM("orichalum", List.of(Tiers.NETHERITE), List.of()),
     MITHRIL("mithril", List.of(Tiers.DIAMOND), List.of(Tiers.NETHERITE));
     
     private final String resourceName;

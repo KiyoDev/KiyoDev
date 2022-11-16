@@ -14,16 +14,15 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 import calytrix.block.CalytrixBlocks;
 import calytrix.item.CalytrixItems;
 import com.mojang.logging.LogUtils;
 import org.slf4j.Logger;
 
-// The value here should match an entry in the META-INF/mods.toml file
 @Mod(Calytrix.MOD_ID)
 public class Calytrix {
-    // Define mod id in a common place for everything to reference
     public static final String MOD_ID = "calytrix";
     private static final Logger LOGGER = LogUtils.getLogger();
     
@@ -45,25 +44,29 @@ public class Calytrix {
         return new ResourceLocation(MOD_ID, name);
     }
     
+    public static ResourceLocation toolsResourceLocation(String path) {
+        return resourceLocation("tools/%s".formatted(path));
+    }
+    
+    public static ResourceLocation toolsResourceLocation(RegistryObject<?> obj) {
+        return resourceLocation("tools/%s".formatted(obj.getId().getPath()));
+    }
+    
     private void commonSetup(final FMLCommonSetupEvent event) {
         // Some common setup code
         LOGGER.info("HELLO FROM COMMON SETUP");
         LOGGER.info("DIRT BLOCK >> {}", ForgeRegistries.BLOCKS.getKey(Blocks.DIRT));
     }
     
-    // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
-        // Do something when the server starts
         LOGGER.info("HELLO from server starting");
     }
     
-    // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
     @EventBusSubscriber(modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
-            // Some client setup code
             LOGGER.info("HELLO FROM CLIENT SETUP");
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance()
                                                          .getUser()

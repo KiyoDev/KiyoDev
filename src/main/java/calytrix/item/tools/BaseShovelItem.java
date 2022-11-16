@@ -2,11 +2,14 @@ package calytrix.item.tools;
 
 import net.minecraft.world.item.ShovelItem;
 
-import calytrix.material.BaseMaterial;
+import calytrix.material.EquipmentMaterial;
 
-public class BaseShovelItem<MAT extends BaseMaterial> extends ShovelItem {
+public class BaseShovelItem extends ShovelItem {
     
-    public BaseShovelItem(MAT material) {
-        super(material.getTier(), material.shovelAttackDamage(), material.shovelAttackSpeed(), material.toolProperties());
+    public <MAT extends EquipmentMaterial> BaseShovelItem(MAT material) {
+        super(material.getStats().getTier(),
+              material.getStats().shovelAttackDamage(),
+              material.getStats().shovelAttackSpeed(),
+              material.getStats().toolProperties());
     }
 }

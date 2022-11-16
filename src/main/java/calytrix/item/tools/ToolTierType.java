@@ -4,16 +4,12 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.ForgeTier;
 import net.minecraftforge.common.TierSortingRegistry;
 
-import calytrix.Calytrix;
-import calytrix.item.CalytrixItems;
-import calytrix.item.resources.ItemResourceIngotData;
 import calytrix.item.resources.ResourceType;
 import calytrix.util.ModTags;
 

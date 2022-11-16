@@ -12,6 +12,7 @@ import calytrix.item.resources.ResourceType;
 import calytrix.util.IItemRegistryObject;
 import calytrix.util.IResource;
 import calytrix.util.ModTags;
+import com.google.common.collect.Multimap;
 import org.apache.logging.log4j.util.TriConsumer;
 
 import java.util.Map;
@@ -31,6 +32,8 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         resourceIngotsTags();
         resourceStorageBlockItemTags();
         oreBlockItemTags();
+        rawMaterialTags();
+        // TODO - dusts
     }
     
     private void resourceIngotsTags() {
@@ -50,8 +53,18 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
             final var oreType = ore.getOreType();
             
             tag(Tags.Items.ORES).add(blockItem);
-            tag(oreType.getInGroundTag()).add(blockItem);
+            switch (oreType) {
+                case STONE -> tag(Tags.Items.ORES_IN_GROUND_STONE).add(blockItem);
+                case DEEPSLATE -> tag(Tags.Items.ORES_IN_GROUND_DEEPSLATE).add(blockItem);
+                case NETHER -> tag(Tags.Items.ORES_IN_GROUND_NETHERRACK).add(blockItem);
+                case END -> tag(ModTags.Items.ORES_IN_GROUND_END).add(blockItem);
+            }
         });
+    }
+    
+    private void rawMaterialTags() {
+        addTags(CalytrixItems.getRawMaterials(), ModTags.Items.rawMaterialTagsByType(),
+                (data, itemObj, rawMaterial) -> tag(Tags.Items.RAW_MATERIALS).add(rawMaterial));
     }
     
     private <DATA extends IResource, ITEM extends Item, OBJ extends IItemRegistryObject<ITEM>> void addTags(
@@ -65,6 +78,24 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
             final var tag = tagsByType.get(type);
             
             tag(tag).add(item);
+            
+            consumer.accept(data, itemObj, item);
+        });
+    }
+    
+    private <DATA extends IResource, ITEM extends Item, OBJ extends IItemRegistryObject<ITEM>> void addTags(
+        Multimap<DATA, OBJ> items,
+        Multimap<ResourceType, TagKey<Item>> tagsByType,
+        TriConsumer<DATA, OBJ, ITEM> consumer
+    ) {
+        items.forEach((data, itemObj) -> {
+            final var item = itemObj.getItem();
+            final var type = data.getResourceType();
+            final var tags = tagsByType.get(type);
+            
+            for (var tag : tags) {
+                tag(tag).add(item);
+            }
             
             consumer.accept(data, itemObj, item);
         });

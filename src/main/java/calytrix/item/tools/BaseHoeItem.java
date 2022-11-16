@@ -2,11 +2,14 @@ package calytrix.item.tools;
 
 import net.minecraft.world.item.HoeItem;
 
-import calytrix.material.BaseMaterial;
+import calytrix.material.EquipmentMaterial;
 
-public class BaseHoeItem<MAT extends BaseMaterial> extends HoeItem {
+public class BaseHoeItem extends HoeItem {
     
-    public BaseHoeItem(MAT material) {
-        super(material.getTier(), material.hoeAttackDamage(), material.hoeAttackSpeed(), material.toolProperties());
+    public <MAT extends EquipmentMaterial> BaseHoeItem(MAT material) {
+        super(material.getStats().getTier(),
+              material.getStats().hoeAttackDamage(),
+              material.getStats().hoeAttackSpeed(),
+              material.getStats().toolProperties());
     }
 }

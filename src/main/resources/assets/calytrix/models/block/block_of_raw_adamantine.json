@@ -1,6 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "calytrix:block/block_of_raw_adamantine"
-  }
-}

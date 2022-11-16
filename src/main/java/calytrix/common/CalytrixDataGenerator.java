@@ -1,8 +1,10 @@
 package calytrix.common;
 
 import calytrix.Calytrix;
+import calytrix.providers.models.BlockStateProvider;
 import calytrix.providers.models.ItemModelProvider;
 import calytrix.providers.recipes.ShapedRecipesProvider;
+import calytrix.providers.recipes.ShapelessRecipesProvider;
 import calytrix.providers.recipes.SmithingRecipesProvider;
 import calytrix.providers.tags.BlockTagsProvider;
 import calytrix.providers.tags.ItemTagsProvider;
@@ -37,6 +39,7 @@ public class CalytrixDataGenerator {
         generator.addProvider(includeClient, new ItemTagsProvider(generator, blockTagsProvider, modId, existingFileHelper));
         
         // Recipes
+        generator.addProvider(includeClient, new ShapelessRecipesProvider(generator, existingFileHelper));
         generator.addProvider(includeClient, new ShapedRecipesProvider(generator, existingFileHelper));
         generator.addProvider(includeClient, new SmithingRecipesProvider(generator, existingFileHelper));
         
@@ -44,6 +47,7 @@ public class CalytrixDataGenerator {
         
         // Models
         generator.addProvider(includeClient, new ItemModelProvider(generator, modId, existingFileHelper));
+        generator.addProvider(includeClient, new BlockStateProvider(generator, modId, existingFileHelper));
         
         // Misc
     }

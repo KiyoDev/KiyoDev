@@ -1,9 +1,12 @@
 package calytrix.util;
 
 import calytrix.Calytrix;
+import calytrix.block.ores.BlockOreData;
 import calytrix.block.resources.BlockResourceData;
-import calytrix.item.resources.ItemResourceIngotData;
+import calytrix.item.resources.ItemResourceMaterialData;
 import calytrix.item.resources.ResourceType;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -23,16 +26,10 @@ public class ModTags {
         public static final TagKey<Block> NEEDS_ADAMANTINE_TOOL = tag("needs_adamantine_tool");
         public static final TagKey<Block> NEEDS_MITHRIL_TOOL = tag("needs_mithril_tool");
         
-        // public static final TagKey<Block> BLOCK_OF_ADAMANTINE = forgeTag("storage_block/adamantine");
-        // public static final TagKey<Block> BLOCK_OF_MITHRIL = forgeTag("storage_block/mithril");
-        
-        // private static final Map<BlockResourceData, TagKey<Block>> RESOURCE_TAGS_BY_TYPE = new LinkedHashMap<>();
         private static final Map<BlockResourceData, TagKey<Block>> RESOURCE_STORAGE_BLOCK_TAGS_BY_TYPE = new LinkedHashMap<>();
         
         static {
-            // final var resourceBlocks = CalytrixBlocks.getResourceBlocks();
-            // for(var block : resourceBlocks.keySet()) {
-            for(var block : BlockResourceData.values()) {
+            for (var block : BlockResourceData.values()) {
                 RESOURCE_STORAGE_BLOCK_TAGS_BY_TYPE.put(block, forgeTag("storage_blocks/%s".formatted(block.resourceName())));
             }
         }
@@ -51,72 +48,83 @@ public class ModTags {
     }
     
     public static class Items {
-    
+        
         public static final TagKey<Item> ORES_IN_GROUND_END = forgeTag("ores_in_ground/end_stone");
-    
+        
         private static final Map<ResourceType, TagKey<Item>> RESOURCE_INGOTS_TAGS_BY_TYPE = new LinkedHashMap<>();
         private static final Map<ResourceType, TagKey<Item>> RESOURCE_STORAGE_BLOCK_TAGS_BY_TYPE = new LinkedHashMap<>();
-        private static final Map<ResourceType, TagKey<Item>> ORE_BLOCK_TAGS_BY_TYPE = new LinkedHashMap<>();
+        private static final Map<ResourceType, TagKey<Item>> RAW_STORAGE_BLOCK_TAGS_BY_TYPE = new LinkedHashMap<>();
+        private static final Map<ResourceType, TagKey<Item>> RAW_MATERIAL_TAGS_BY_TYPE = new LinkedHashMap<>();
+        private static final Multimap<ResourceType, TagKey<Item>> ORE_BLOCK_TAGS_BY_TYPE = ArrayListMultimap.create();
         
         static {
-            for(var resource : ResourceType.values()) {
-                RESOURCE_INGOTS_TAGS_BY_TYPE.put(resource, forgeTag("ingots/%s".formatted(resource.getResourceName())));
-                RESOURCE_STORAGE_BLOCK_TAGS_BY_TYPE.put(resource, forgeTag("storage_blocks/%s".formatted(resource.getResourceName())));
-                ORE_BLOCK_TAGS_BY_TYPE.put(resource, forgeTag("ores/%s".formatted(resource.getResourceName())));
+            for (var ingot : ItemResourceMaterialData.values()) {
+                RESOURCE_INGOTS_TAGS_BY_TYPE.put(ingot.getResourceType(),
+                                                 forgeTag("ingots/%s_ingot".formatted(ingot.resourceName())));
             }
             
-            // for(var blockItem : BlockResourceData.values()) {
-            //     RESOURCE_STORAGE_BLOCK_TAGS_BY_TYPE.put(blockItem, forgeTag("storage_blocks/%s".formatted(blockItem.resourceName())));
-            // }
+            for (var block : BlockResourceData.values()) {
+                RESOURCE_STORAGE_BLOCK_TAGS_BY_TYPE.put(block.getResourceType(),
+                                                        forgeTag("storage_blocks/%s_block".formatted(block.resourceName())));
+            }
+            
+            addOreTags();
         }
-    
+        
         public static Map<ResourceType, TagKey<Item>> resourceIngotsTagsByType() {
             return Collections.unmodifiableMap(RESOURCE_INGOTS_TAGS_BY_TYPE);
         }
-    
+        
         public static Map<ResourceType, TagKey<Item>> resourceStorageBlocksTagsByType() {
             return Collections.unmodifiableMap(RESOURCE_STORAGE_BLOCK_TAGS_BY_TYPE);
         }
-    
-        public static Map<ResourceType, TagKey<Item>> oreBlocksTagsByType() {
-            return Collections.unmodifiableMap(ORE_BLOCK_TAGS_BY_TYPE);
+        
+        public static Multimap<ResourceType, TagKey<Item>> oreBlocksTagsByType() {
+            return ORE_BLOCK_TAGS_BY_TYPE;
+        }
+        
+        public static Map<ResourceType, TagKey<Item>> rawMaterialTagsByType() {
+            return Collections.unmodifiableMap(RAW_MATERIAL_TAGS_BY_TYPE);
+        }
+        
+        public static Map<ResourceType, TagKey<Item>> rawStorageBlocksTagsByType() {
+            return Collections.unmodifiableMap(RAW_STORAGE_BLOCK_TAGS_BY_TYPE);
         }
         
         private static void addOreTags() {
             // ores
+            oreAndRawTags();
             // ores/...
             // ores_in_ground/...
             // ore_rates/...
         }
-    
-        // public static Map<ItemResourceIngotData, TagKey<Item>> resourceIngotsTagsByType() {
-        //     return Collections.unmodifiableMap(RESOURCE_INGOTS_TAGS_BY_TYPE);
-        // }
-        //
-        // public static Map<BlockResourceData, TagKey<Item>> resourceStorageBlocksTagsByType() {
-        //     return Collections.unmodifiableMap(RESOURCE_STORAGE_BLOCK_TAGS_BY_TYPE);
-        // }
+        
+        private static void oreAndRawTags() {
+            for (var ore : BlockOreData.values()) {
+                for (var type : ore.getTypes()) {
+                    String name = switch (type) {
+                        case STONE -> "%s_ore".formatted(ore.resourceName());
+                        default -> "%s_%s_ore".formatted(type.getPrefix(), ore.resourceName());
+                    };
+                    ORE_BLOCK_TAGS_BY_TYPE.put(ore.getResourceType(), forgeTag("ores/%s_ores".formatted(name)));
+                }
+                RAW_MATERIAL_TAGS_BY_TYPE.put(ore.getResourceType(),
+                                              forgeTag("raw_materials/raw_%s".formatted(ore.resourceName())));
+                RAW_STORAGE_BLOCK_TAGS_BY_TYPE.put(ore.getResourceType(),
+                                                   forgeTag("storage_blocks/raw_%s_block".formatted(ore.resourceName())));
+            }
+        }
         
         private static TagKey<Item> tag(String name) {
             return ItemTags.create(Calytrix.resourceLocation(name));
         }
-    
+        
         private static TagKey<Item> forgeTag(String name) {
             return ItemTags.create(forgeResourceLocation(name));
         }
-        
-        public static void itemBuilder() {
-            // TagsProvider.
-        }
     }
-
-    // private static TagBuilder tagBuilder() {
-    //
-    // }
     
     private static ResourceLocation forgeResourceLocation(String name) {
         return new ResourceLocation("forge", name);
     }
-    
-    // public static class
 }

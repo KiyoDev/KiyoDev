@@ -1,6 +1,5 @@
 package calytrix.util;
 
-import lombok.Getter;
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.item.Rarity;
 

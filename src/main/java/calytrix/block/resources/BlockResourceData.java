@@ -8,7 +8,6 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.material.Material;
 
 import calytrix.item.resources.ResourceType;
-import calytrix.item.tools.ToolTierType;
 import calytrix.util.CalytrixRarity;
 import calytrix.util.IBlockData;
 import calytrix.util.IResource;
@@ -47,8 +46,16 @@ public enum BlockResourceData implements IBlockData, IResource {
         this(resourceType, strength, resistance, material, rarity, fireResistant, requiresCorrectToolForDrops, 0);
     }
     
+    public String blockOfName() {
+        return "block_of_%s".formatted(resourceName());
+    }
+    
     public String resourceName() {
         return resourceType.getResourceName();
+    }
+    
+    public static BlockResourceData fromType(ResourceType type) {
+        return STORAGE_BLOCK_BY_RESOURCE_TYPE.get(type);
     }
     
     private static Map<ResourceType, BlockResourceData> init() {

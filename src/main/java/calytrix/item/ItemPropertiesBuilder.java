@@ -54,7 +54,7 @@ public class ItemPropertiesBuilder {
             props = props.durability(maxDamage);
         }
         
-        if (maxStackSize != 64) {
+        if (maxStackSize != 64 && maxDamage == 0) {
             props = props.stacksTo(maxStackSize);
         }
         

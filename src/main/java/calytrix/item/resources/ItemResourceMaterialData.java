@@ -13,13 +13,19 @@ import calytrix.util.CalytrixRarity;
 import calytrix.util.IItemData;
 import calytrix.util.IResource;
 
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import javax.annotation.Nullable;
 
 @Getter
 @RequiredArgsConstructor
-public enum ItemResourceIngotData implements IItemData, IResource {
+public enum ItemResourceMaterialData implements IItemData, IResource {
     ADAMANTINE(BlockResourceData.ADAMANTINE, CalytrixRarity.LEGENDARY, true),
     MITHRIL(BlockResourceData.MITHRIL, Rarity.RARE, false);
+    
+    private static final Map<ResourceType, ItemResourceMaterialData> DATA_BY_TYPE = init();
     
     private final BlockResourceData blockResourceData;
     private final int maxStackSize;
@@ -33,7 +39,7 @@ public enum ItemResourceIngotData implements IItemData, IResource {
     @Nullable
     private final FoodProperties foodProperties;
     
-    ItemResourceIngotData(
+    ItemResourceMaterialData(
         BlockResourceData blockResourceData,
         Rarity rarity,
         boolean fireResistant
@@ -45,8 +51,21 @@ public enum ItemResourceIngotData implements IItemData, IResource {
         return blockResourceData.resourceName();
     }
     
+    public static ItemResourceMaterialData fromType(ResourceType resourceType) {
+        return DATA_BY_TYPE.get(resourceType);
+    }
+    
     @Override
     public ResourceType getResourceType() {
         return blockResourceData.getResourceType();
+    }
+    
+    private static Map<ResourceType, ItemResourceMaterialData> init() {
+        final Map<ResourceType, ItemResourceMaterialData> map = new LinkedHashMap<>();
+        for(var data : ItemResourceMaterialData.values()) {
+            map.put(data.getResourceType(), data);
+        }
+        
+        return Collections.unmodifiableMap(map);
     }
 }

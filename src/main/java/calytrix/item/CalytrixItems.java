@@ -1,22 +1,22 @@
 package calytrix.item;
 
+import net.minecraft.world.item.Item;
+import net.minecraftforge.eventbus.api.IEventBus;
+
+import calytrix.block.ores.BlockOreData;
+import calytrix.item.resources.ItemRawMaterial;
 import calytrix.item.resources.ItemResource;
-import calytrix.item.resources.ItemResourceIngotData;
+import calytrix.item.resources.ItemResourceMaterialData;
 import calytrix.item.resources.ResourceType;
 import calytrix.item.tools.BaseAxeItem;
-import calytrix.item.tools.ToolTierType;
-import calytrix.material.BaseMaterial;
+import calytrix.item.tools.BaseHoeItem;
+import calytrix.item.tools.BasePickaxeItem;
+import calytrix.item.tools.BaseShovelItem;
+import calytrix.item.tools.BaseSwordItem;
+import calytrix.material.EquipmentMaterial;
 import calytrix.registry.ItemDeferredRegister;
-import calytrix.util.CalytrixConstants;
-
-import net.minecraft.world.item.AxeItem;
-import net.minecraft.world.item.HoeItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.PickaxeItem;
-import net.minecraft.world.item.ShovelItem;
-import net.minecraft.world.item.SwordItem;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.RegistryObject;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -27,95 +27,105 @@ public class CalytrixItems {
     
     public static final ItemDeferredRegister ITEMS = new ItemDeferredRegister();
     
-    private static final Map<ItemResourceIngotData, ItemRegistryObject<ItemResource>> RESOURCE_INGOTS = new LinkedHashMap<>();
-    private static final Map<ItemResourceIngotData, ItemRegistryObject<ItemResource>> RESOURCE_RAW = new LinkedHashMap<>();
-    private static final Map<ItemResourceIngotData, ItemRegistryObject<ItemResource>> RESOURCE_DUST = new LinkedHashMap<>();
+    private static final Map<ItemResourceMaterialData, ItemRegistryObject<ItemResource>> RESOURCE_INGOTS = new LinkedHashMap<>();
+    private static final Map<ItemResourceMaterialData, ItemRegistryObject<ItemResource>> RESOURCE_DUST = new LinkedHashMap<>();
+    
+    private static final Map<BlockOreData, ItemRegistryObject<ItemRawMaterial>> RESOURCE_RAW = new LinkedHashMap<>();
+    
+    public static final Multimap<ResourceType, ItemRegistryObject<?>> TOOLS_MULTIMAP = ArrayListMultimap.create();
+    
+    public static final ItemRegistryObject<BasePickaxeItem> MITHRIL_PICKAXE = registerPickaxeItem(EquipmentMaterial.MITHRIL);
+    public static final ItemRegistryObject<BaseAxeItem> MITHRIL_AXE = registerAxeItem(EquipmentMaterial.MITHRIL);
+    public static final ItemRegistryObject<BaseShovelItem> MITHRIL_SHOVEL = registerShovelItem(EquipmentMaterial.MITHRIL);
+    public static final ItemRegistryObject<BaseHoeItem> MITHRIL_HOE = registerHoeItem(EquipmentMaterial.MITHRIL);
+    public static final ItemRegistryObject<BaseSwordItem> MITHRIL_SWORD = registerSwordItem(EquipmentMaterial.MITHRIL);
+    
+    public static final ItemRegistryObject<BasePickaxeItem> ADAMANTINE_PICKAXE =
+        registerPickaxeItem(EquipmentMaterial.ADAMANTINE);
+    public static final ItemRegistryObject<BaseAxeItem> ADAMANTINE_AXE = registerAxeItem(EquipmentMaterial.ADAMANTINE);
+    public static final ItemRegistryObject<BaseShovelItem> ADAMANTINE_SHOVEL = registerShovelItem(EquipmentMaterial.ADAMANTINE);
+    public static final ItemRegistryObject<BaseHoeItem> ADAMANTINE_HOE = registerHoeItem(EquipmentMaterial.ADAMANTINE);
+    public static final ItemRegistryObject<BaseSwordItem> ADAMANTINE_SWORD = registerSwordItem(EquipmentMaterial.ADAMANTINE);
     
     static {
-        for (var resource : ItemResourceIngotData.values()) {
+        for (var resource : ItemResourceMaterialData.values()) {
             RESOURCE_INGOTS.put(resource, registerResourceIngot(resource));
-            RESOURCE_RAW.put(resource, registerResourceRaw(resource));
             RESOURCE_DUST.put(resource, registerResourceDust(resource));
         }
+        
+        for(var ore : BlockOreData.values()) {
+            RESOURCE_RAW.put(ore, registerResourceRaw(ore));
+        }
+        
+        TOOLS_MULTIMAP.put(ResourceType.MITHRIL, MITHRIL_PICKAXE);
+        TOOLS_MULTIMAP.put(ResourceType.MITHRIL, MITHRIL_AXE);
+        TOOLS_MULTIMAP.put(ResourceType.MITHRIL, MITHRIL_SHOVEL);
+        TOOLS_MULTIMAP.put(ResourceType.MITHRIL, MITHRIL_HOE);
+        TOOLS_MULTIMAP.put(ResourceType.MITHRIL, MITHRIL_SWORD);
+        
+        TOOLS_MULTIMAP.put(ResourceType.ADAMANTINE, ADAMANTINE_PICKAXE);
+        TOOLS_MULTIMAP.put(ResourceType.ADAMANTINE, ADAMANTINE_AXE);
+        TOOLS_MULTIMAP.put(ResourceType.ADAMANTINE, ADAMANTINE_SHOVEL);
+        TOOLS_MULTIMAP.put(ResourceType.ADAMANTINE, ADAMANTINE_HOE);
+        TOOLS_MULTIMAP.put(ResourceType.ADAMANTINE, ADAMANTINE_SWORD);
     }
     
-    private static ItemRegistryObject<ItemResource> registerResourceIngot(ItemResourceIngotData resource) {
+    private static ItemRegistryObject<ItemResource> registerResourceIngot(ItemResourceMaterialData resource) {
         return ITEMS.registerItem("%s_ingot".formatted(resource.resourceName()),
                                   () -> new ItemResource(resource));
     }
     
-    private static ItemRegistryObject<ItemResource> registerResourceRaw(ItemResourceIngotData resource) {
-        return ITEMS.registerItem("raw_%s".formatted(resource.resourceName()),
-                                  () -> new ItemResource(resource));
-    }
-    
-    private static ItemRegistryObject<ItemResource> registerResourceDust(ItemResourceIngotData resource) {
+    private static ItemRegistryObject<ItemResource> registerResourceDust(ItemResourceMaterialData resource) {
         return ITEMS.registerItem("%s_dust".formatted(resource.resourceName()),
                                   () -> new ItemResource(resource));
     }
     
-    public static Map<ItemResourceIngotData, ItemRegistryObject<ItemResource>> getResourceIngots() {
+    private static ItemRegistryObject<ItemRawMaterial> registerResourceRaw(BlockOreData ore) {
+        return ITEMS.registerItem("raw_%s".formatted(ore.resourceName()),
+                                  () -> new ItemRawMaterial(ore));
+    }
+    
+    public static Map<ItemResourceMaterialData, ItemRegistryObject<ItemResource>> getResourceIngots() {
         return Collections.unmodifiableMap(RESOURCE_INGOTS);
     }
     
-    // public static final RegistryObject<Item> RAW_ADAMANTINE =
-    //     ITEMS.registerItem("raw_adamantine", () -> new Item(new Item.Properties()
-    //                                                             .fireResistant()
-    //                                                             .tab(ModCalytrixConstants.CALYTRIX_TAB))).getItem();
-    
-    // TODO - change tool registration
-    
-    public static final RegistryObject<PickaxeItem> ADAMANTINE_PICKAXE =
-        ITEMS.registerItem("adamantine_pickaxe",
-                           () -> new PickaxeItem(ToolTierType.ADAMANTINE.getTier(), 0, -2.8f,
-                                                 new Item.Properties().fireResistant().tab(CalytrixConstants.CALYTRIX_TAB))).getItemObj();
-    public static final RegistryObject<ShovelItem> ADAMANTINE_SHOVEL =
-        ITEMS.registerItem("adamantine_shovel",
-                           () -> new ShovelItem(ToolTierType.ADAMANTINE.getTier(), 0, -3,
-                                                new Item.Properties().fireResistant().tab(CalytrixConstants.CALYTRIX_TAB))).getItemObj();
-    public static final RegistryObject<HoeItem> ADAMANTINE_HOE =
-        ITEMS.registerItem("adamantine_hoe",
-                           () -> new HoeItem(ToolTierType.ADAMANTINE.getTier(), -5, 0,
-                                             new Item.Properties().fireResistant().tab(CalytrixConstants.CALYTRIX_TAB))).getItemObj();
-    public static final RegistryObject<AxeItem> ADAMANTINE_AXE =
-        ITEMS.registerItem("adamantine_axe",
-                           () -> new AxeItem(ToolTierType.ADAMANTINE.getTier(), 5, -3f,
-                                             new Item.Properties().fireResistant().tab(CalytrixConstants.CALYTRIX_TAB))).getItemObj();
-    public static final RegistryObject<SwordItem> ADAMANTINE_SWORD =
-        ITEMS.registerItem("adamantine_sword",
-                           () -> new SwordItem(ToolTierType.ADAMANTINE.getTier(), 3, -2.4f,
-                                               new Item.Properties().fireResistant().tab(CalytrixConstants.CALYTRIX_TAB))).getItemObj();
-    
-    public static final RegistryObject<PickaxeItem> MITHRIL_PICKAXE =
-        ITEMS.registerItem("mithril_pickaxe",
-                           () -> new PickaxeItem(ToolTierType.MITHRIL.getTier(), 1, -2.8f,
-                                                 new Item.Properties().tab(CalytrixConstants.CALYTRIX_TAB))).getItemObj();
-    public static final RegistryObject<ShovelItem> MITHRIL_SHOVEL =
-        ITEMS.registerItem("mithril_shovel",
-                           () -> new ShovelItem(ToolTierType.MITHRIL.getTier(), 0, -3,
-                                                new Item.Properties().fireResistant().tab(CalytrixConstants.CALYTRIX_TAB))).getItemObj();
-    public static final RegistryObject<HoeItem> MITHRIL_HOE =
-        ITEMS.registerItem("mithril_hoe",
-                           () -> new HoeItem(ToolTierType.MITHRIL.getTier(), -2, 1,
-                                             new Item.Properties().fireResistant().tab(CalytrixConstants.CALYTRIX_TAB))).getItemObj();
-    public static final RegistryObject<AxeItem> MITHRIL_AXE =
-        ITEMS.registerItem("mithril_axe",
-                           () -> new AxeItem(ToolTierType.MITHRIL.getTier(), 5, -2.8f,
-                                             new Item.Properties().tab(CalytrixConstants.CALYTRIX_TAB))).getItemObj();
-    public static final RegistryObject<SwordItem> MITHRIL_SWORD =
-        ITEMS.registerItem("mithril_sword",
-                           () -> new SwordItem(ToolTierType.MITHRIL.getTier(), 3, -1.8f,
-                                               new Item.Properties().tab(CalytrixConstants.CALYTRIX_TAB))).getItemObj();
-    
-    private static <MAT extends BaseMaterial> void registerToolSet(MAT material) {
-        registerItem("%s_pickaxe".formatted(material.resourceName()), material, BaseAxeItem::new);
-        registerItem("%s_axe".formatted(material.resourceName()), material, BaseAxeItem::new);
-        registerItem("%s_shovel".formatted(material.resourceName()), material, BaseAxeItem::new);
-        registerItem("%s_hoe".formatted(material.resourceName()), material, BaseAxeItem::new);
-        registerItem("%s_sword".formatted(material.resourceName()), material, BaseAxeItem::new);
+    public static Map<BlockOreData, ItemRegistryObject<ItemRawMaterial>> getRawMaterials() {
+        return Collections.unmodifiableMap(RESOURCE_RAW);
     }
     
-    private static <ITEM extends Item, MAT extends BaseMaterial> ItemRegistryObject<ITEM> registerItem(
+    public static Map<ItemResourceMaterialData, ItemRegistryObject<ItemResource>> getDusts() {
+        return Collections.unmodifiableMap(RESOURCE_DUST);
+    }
+    
+    private static <MAT extends EquipmentMaterial> void registerToolSet(MAT material) {
+        registerPickaxeItem(material);
+        registerAxeItem(material);
+        registerShovelItem(material);
+        registerHoeItem(material);
+        registerSwordItem(material);
+    }
+    
+    private static <MAT extends EquipmentMaterial> ItemRegistryObject<BasePickaxeItem> registerPickaxeItem(MAT material) {
+        return registerItem("%s_pickaxe".formatted(material.resourceName()), material, BasePickaxeItem::new);
+    }
+    
+    private static <MAT extends EquipmentMaterial> ItemRegistryObject<BaseAxeItem> registerAxeItem(MAT material) {
+        return registerItem("%s_axe".formatted(material.resourceName()), material, BaseAxeItem::new);
+    }
+    
+    private static <MAT extends EquipmentMaterial> ItemRegistryObject<BaseShovelItem> registerShovelItem(MAT material) {
+        return registerItem("%s_shovel".formatted(material.resourceName()), material, BaseShovelItem::new);
+    }
+    
+    private static <MAT extends EquipmentMaterial> ItemRegistryObject<BaseHoeItem> registerHoeItem(MAT material) {
+        return registerItem("%s_hoe".formatted(material.resourceName()), material, BaseHoeItem::new);
+    }
+    
+    private static <MAT extends EquipmentMaterial> ItemRegistryObject<BaseSwordItem> registerSwordItem(MAT material) {
+        return registerItem("%s_sword".formatted(material.resourceName()), material, BaseSwordItem::new);
+    }
+    
+    private static <ITEM extends Item, MAT extends EquipmentMaterial> ItemRegistryObject<ITEM> registerItem(
         String toolName,
         MAT material,
         Function<MAT, ITEM> supplier

@@ -2,7 +2,7 @@ package calytrix.providers.recipes;
 
 import calytrix.Calytrix;
 import calytrix.item.CalytrixItems;
-import calytrix.item.resources.ItemResourceIngotData;
+import calytrix.item.resources.ItemResourceMaterialData;
 import calytrix.util.ModTags;
 import com.mojang.logging.LogUtils;
 import net.minecraft.data.DataGenerator;
@@ -33,30 +33,13 @@ public class SmithingRecipesProvider extends CalytrixRecipeProvider {
     
     private static void buildAdamantineRecipes(Consumer<FinishedRecipe> consumer) {
         final var ingotTags = ModTags.Items.resourceIngotsTagsByType();
-        var adamantineTag = ingotTags.get(ItemResourceIngotData.ADAMANTINE.getResourceType());
+        var adamantineTag = ingotTags.get(ItemResourceMaterialData.ADAMANTINE.getResourceType());
         
-        buildRecipe(consumer, Items.NETHERITE_PICKAXE, adamantineTag, CalytrixItems.ADAMANTINE_PICKAXE);
-        buildRecipe(consumer, Items.NETHERITE_AXE, adamantineTag, CalytrixItems.ADAMANTINE_AXE);
-        buildRecipe(consumer, Items.NETHERITE_SHOVEL, adamantineTag, CalytrixItems.ADAMANTINE_SHOVEL);
-        buildRecipe(consumer, Items.NETHERITE_HOE, adamantineTag, CalytrixItems.ADAMANTINE_HOE);
-        buildRecipe(consumer, Items.NETHERITE_SWORD, adamantineTag, CalytrixItems.ADAMANTINE_SWORD);
-    }
-    
-    private static void addToolSet(
-        Consumer<FinishedRecipe> consumer,
-        ItemLike base,
-        TagKey<Item> material,
-        RegistryObject<ItemLike> pickaxe,
-        RegistryObject<ItemLike> axe,
-        RegistryObject<ItemLike> shovel,
-        RegistryObject<ItemLike> hoe,
-        RegistryObject<ItemLike> sword
-    ) {
-        buildRecipe(consumer, base, material, pickaxe);
-        buildRecipe(consumer, base, material, axe);
-        buildRecipe(consumer, base, material, shovel);
-        buildRecipe(consumer, base, material, hoe);
-        buildRecipe(consumer, base, material, sword);
+        buildRecipe(consumer, Items.NETHERITE_PICKAXE, adamantineTag, CalytrixItems.ADAMANTINE_PICKAXE.getItemObj());
+        buildRecipe(consumer, Items.NETHERITE_AXE, adamantineTag, CalytrixItems.ADAMANTINE_AXE.getItemObj());
+        buildRecipe(consumer, Items.NETHERITE_SHOVEL, adamantineTag, CalytrixItems.ADAMANTINE_SHOVEL.getItemObj());
+        buildRecipe(consumer, Items.NETHERITE_HOE, adamantineTag, CalytrixItems.ADAMANTINE_HOE.getItemObj());
+        buildRecipe(consumer, Items.NETHERITE_SWORD, adamantineTag, CalytrixItems.ADAMANTINE_SWORD.getItemObj());
     }
     
     private static <ITEM extends ItemLike> void buildRecipe(
