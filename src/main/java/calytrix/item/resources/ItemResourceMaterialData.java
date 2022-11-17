@@ -12,12 +12,11 @@ import calytrix.block.resources.BlockResourceData;
 import calytrix.util.CalytrixRarity;
 import calytrix.util.IItemData;
 import calytrix.util.IResource;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import javax.annotation.Nullable;
 
 @Getter
 @RequiredArgsConstructor
@@ -62,7 +61,7 @@ public enum ItemResourceMaterialData implements IItemData, IResource {
     
     private static Map<ResourceType, ItemResourceMaterialData> init() {
         final Map<ResourceType, ItemResourceMaterialData> map = new LinkedHashMap<>();
-        for(var data : ItemResourceMaterialData.values()) {
+        for (var data : ItemResourceMaterialData.values()) {
             map.put(data.getResourceType(), data);
         }
         

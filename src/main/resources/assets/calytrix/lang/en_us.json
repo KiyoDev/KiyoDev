@@ -18,10 +18,10 @@
   "item.calytrix.mithril_sword": "Mithril Sword",
 
   "block.calytrix.block_of_adamantine": "Block of Adamantine",
-  "block.calytrix.block_of_raw_adamantine": "Block of Raw Adamantine",
+  "block.calytrix.raw_adamantine_block": "Block of Raw Adamantine",
   "block.calytrix.deepslate_adamantine_ore": "Deepslate Adamantine Ore",
   "block.calytrix.block_of_mithril": "Block of Mithril",
-  "block.calytrix.block_of_raw_mithril": "Block of Raw Mithril",
+  "block.calytrix.raw_mithril_block": "Block of Raw Mithril",
   "block.calytrix.deepslate_mithril_ore": "Deepslate Mithril Ore",
   "block.calytrix.mithril_ore": "Mithril Ore"
 }

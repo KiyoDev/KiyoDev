@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "calytrix:block_of_raw_adamantine"
+          "name": "calytrix:raw_adamantine_block"
         }
       ]
     }

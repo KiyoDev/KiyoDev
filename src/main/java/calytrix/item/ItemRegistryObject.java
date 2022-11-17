@@ -10,7 +10,7 @@ import calytrix.util.IItemRegistryObject;
 
 @Getter
 @RequiredArgsConstructor
-public class ItemRegistryObject<ITEM extends Item> implements IItemRegistryObject<ITEM> {
+public class ItemRegistryObject<ITEM extends Item> implements IItemRegistryObject {
     private final RegistryObject<ITEM> itemObj;
     
     public String registry() {

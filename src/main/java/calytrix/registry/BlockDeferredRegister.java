@@ -1,7 +1,6 @@
 package calytrix.registry;
 
 import static calytrix.Calytrix.MOD_ID;
-
 import lombok.Getter;
 
 import net.minecraft.world.item.Item;
@@ -12,7 +11,12 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import calytrix.block.BlockRegistryObject;
+import calytrix.util.IBlockRegistryObject;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -21,6 +25,8 @@ import java.util.function.Supplier;
 public class BlockDeferredRegister {
     private final DeferredRegister<Block> blocks;
     private final DeferredRegister<Item> items;
+    
+    private final Set<IBlockRegistryObject> registeredBlocks = new HashSet<>();
     
     public BlockDeferredRegister() {
         blocks = DeferredRegister.create(ForgeRegistries.BLOCKS, MOD_ID);
@@ -33,7 +39,11 @@ public class BlockDeferredRegister {
         Function<RegistryObject<BLOCK>, ITEM> blockItemCreator
     ) {
         var block = blocks.register(name, blockSupplier);
-        return register(name, block, () -> blockItemCreator.apply(block), BlockRegistryObject::new);
+        var registeredBlock = register(name, block, () -> blockItemCreator.apply(block), BlockRegistryObject::new);
+        
+        registeredBlocks.add(registeredBlock);
+        
+        return registeredBlock;
     }
     
     public <BLOCK extends Block, ITEM extends Item> BlockRegistryObject<BLOCK, ITEM> register(
@@ -44,6 +54,14 @@ public class BlockDeferredRegister {
     ) {
         var blockItem = items.register(name, blockItemSupplier);
         return registryObjectCreator.apply(block, blockItem);
+    }
+    
+    public Collection<RegistryObject<Block>> getAllBlocks() {
+        return Collections.unmodifiableCollection(blocks.getEntries());
+    }
+    
+    public Set<IBlockRegistryObject> getAllRegisteredBlocks() {
+        return Collections.unmodifiableSet(registeredBlocks);
     }
     
     public void register(IEventBus bus) {

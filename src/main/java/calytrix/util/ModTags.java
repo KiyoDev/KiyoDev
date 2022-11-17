@@ -3,6 +3,9 @@ package calytrix.util;
 import calytrix.Calytrix;
 import calytrix.block.ores.BlockOreData;
 import calytrix.block.resources.BlockResourceData;
+import calytrix.item.CalytrixItems;
+import calytrix.item.ItemRegistryObject;
+import calytrix.item.resources.ItemRawMaterial;
 import calytrix.item.resources.ItemResourceMaterialData;
 import calytrix.item.resources.ResourceType;
 import com.google.common.collect.ArrayListMultimap;
@@ -68,6 +71,13 @@ public class ModTags {
                                                         forgeTag("storage_blocks/%s_block".formatted(block.resourceName())));
             }
             
+            // for (var block : BlockOreData.values()) {
+            //     // final ItemRegistryObject<ItemRawMaterial> itemRawMaterialItemRegistryObject =
+            //     //     CalytrixItems.getRawMaterials().get(block);
+            //     RAW_STORAGE_BLOCK_TAGS_BY_TYPE.put(block.getResourceType(),
+            //                                             forgeTag("storage_blocks/raw_%s".formatted(block.resourceName())));
+            // }
+            
             addOreTags();
         }
         
@@ -102,16 +112,12 @@ public class ModTags {
         private static void oreAndRawTags() {
             for (var ore : BlockOreData.values()) {
                 for (var type : ore.getTypes()) {
-                    String name = switch (type) {
-                        case STONE -> "%s_ore".formatted(ore.resourceName());
-                        default -> "%s_%s_ore".formatted(type.getPrefix(), ore.resourceName());
-                    };
-                    ORE_BLOCK_TAGS_BY_TYPE.put(ore.getResourceType(), forgeTag("ores/%s_ores".formatted(name)));
+                    ORE_BLOCK_TAGS_BY_TYPE.put(ore.getResourceType(), forgeTag("ores/%s".formatted(ore.resourceName())));
                 }
                 RAW_MATERIAL_TAGS_BY_TYPE.put(ore.getResourceType(),
-                                              forgeTag("raw_materials/raw_%s".formatted(ore.resourceName())));
+                                              forgeTag("raw_materials/%s".formatted(ore.resourceName())));
                 RAW_STORAGE_BLOCK_TAGS_BY_TYPE.put(ore.getResourceType(),
-                                                   forgeTag("storage_blocks/raw_%s_block".formatted(ore.resourceName())));
+                                                   forgeTag("storage_blocks/raw_%s".formatted(ore.resourceName())));
             }
         }
         

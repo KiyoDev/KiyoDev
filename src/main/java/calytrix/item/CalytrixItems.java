@@ -13,10 +13,9 @@ import calytrix.item.tools.BaseHoeItem;
 import calytrix.item.tools.BasePickaxeItem;
 import calytrix.item.tools.BaseShovelItem;
 import calytrix.item.tools.BaseSwordItem;
+import calytrix.item.tools.BaseToolSet;
 import calytrix.material.EquipmentMaterial;
 import calytrix.registry.ItemDeferredRegister;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -32,13 +31,8 @@ public class CalytrixItems {
     
     private static final Map<BlockOreData, ItemRegistryObject<ItemRawMaterial>> RESOURCE_RAW = new LinkedHashMap<>();
     
-    public static final Multimap<ResourceType, ItemRegistryObject<?>> TOOLS_MULTIMAP = ArrayListMultimap.create();
-    
-    public static final ItemRegistryObject<BasePickaxeItem> MITHRIL_PICKAXE = registerPickaxeItem(EquipmentMaterial.MITHRIL);
-    public static final ItemRegistryObject<BaseAxeItem> MITHRIL_AXE = registerAxeItem(EquipmentMaterial.MITHRIL);
-    public static final ItemRegistryObject<BaseShovelItem> MITHRIL_SHOVEL = registerShovelItem(EquipmentMaterial.MITHRIL);
-    public static final ItemRegistryObject<BaseHoeItem> MITHRIL_HOE = registerHoeItem(EquipmentMaterial.MITHRIL);
-    public static final ItemRegistryObject<BaseSwordItem> MITHRIL_SWORD = registerSwordItem(EquipmentMaterial.MITHRIL);
+    public static final Map<EquipmentMaterial, BaseToolSet> TOOL_SETS_BY_RESOURCE_TYPE = new LinkedHashMap<>();
+    // public static final Multimap<ResourceType, ItemRegistryObject<?>> TOOLS_MULTIMAP = ArrayListMultimap.create();
     
     public static final ItemRegistryObject<BasePickaxeItem> ADAMANTINE_PICKAXE =
         registerPickaxeItem(EquipmentMaterial.ADAMANTINE);
@@ -47,27 +41,28 @@ public class CalytrixItems {
     public static final ItemRegistryObject<BaseHoeItem> ADAMANTINE_HOE = registerHoeItem(EquipmentMaterial.ADAMANTINE);
     public static final ItemRegistryObject<BaseSwordItem> ADAMANTINE_SWORD = registerSwordItem(EquipmentMaterial.ADAMANTINE);
     
+    public static final ItemRegistryObject<BasePickaxeItem> MITHRIL_PICKAXE = registerPickaxeItem(EquipmentMaterial.MITHRIL);
+    public static final ItemRegistryObject<BaseAxeItem> MITHRIL_AXE = registerAxeItem(EquipmentMaterial.MITHRIL);
+    public static final ItemRegistryObject<BaseShovelItem> MITHRIL_SHOVEL = registerShovelItem(EquipmentMaterial.MITHRIL);
+    public static final ItemRegistryObject<BaseHoeItem> MITHRIL_HOE = registerHoeItem(EquipmentMaterial.MITHRIL);
+    public static final ItemRegistryObject<BaseSwordItem> MITHRIL_SWORD = registerSwordItem(EquipmentMaterial.MITHRIL);
+    
+    
     static {
         for (var resource : ItemResourceMaterialData.values()) {
             RESOURCE_INGOTS.put(resource, registerResourceIngot(resource));
             RESOURCE_DUST.put(resource, registerResourceDust(resource));
         }
         
-        for(var ore : BlockOreData.values()) {
+        for (var ore : BlockOreData.values()) {
             RESOURCE_RAW.put(ore, registerResourceRaw(ore));
         }
         
-        TOOLS_MULTIMAP.put(ResourceType.MITHRIL, MITHRIL_PICKAXE);
-        TOOLS_MULTIMAP.put(ResourceType.MITHRIL, MITHRIL_AXE);
-        TOOLS_MULTIMAP.put(ResourceType.MITHRIL, MITHRIL_SHOVEL);
-        TOOLS_MULTIMAP.put(ResourceType.MITHRIL, MITHRIL_HOE);
-        TOOLS_MULTIMAP.put(ResourceType.MITHRIL, MITHRIL_SWORD);
-        
-        TOOLS_MULTIMAP.put(ResourceType.ADAMANTINE, ADAMANTINE_PICKAXE);
-        TOOLS_MULTIMAP.put(ResourceType.ADAMANTINE, ADAMANTINE_AXE);
-        TOOLS_MULTIMAP.put(ResourceType.ADAMANTINE, ADAMANTINE_SHOVEL);
-        TOOLS_MULTIMAP.put(ResourceType.ADAMANTINE, ADAMANTINE_HOE);
-        TOOLS_MULTIMAP.put(ResourceType.ADAMANTINE, ADAMANTINE_SWORD);
+        TOOL_SETS_BY_RESOURCE_TYPE.put(EquipmentMaterial.ADAMANTINE,
+                                       new BaseToolSet(ADAMANTINE_PICKAXE, ADAMANTINE_AXE, ADAMANTINE_SHOVEL, ADAMANTINE_HOE,
+                                                       ADAMANTINE_SWORD));
+        TOOL_SETS_BY_RESOURCE_TYPE.put(EquipmentMaterial.MITHRIL,
+                                       new BaseToolSet(MITHRIL_PICKAXE, MITHRIL_AXE, MITHRIL_SHOVEL, MITHRIL_HOE, MITHRIL_SWORD));
     }
     
     private static ItemRegistryObject<ItemResource> registerResourceIngot(ItemResourceMaterialData resource) {
@@ -95,14 +90,6 @@ public class CalytrixItems {
     
     public static Map<ItemResourceMaterialData, ItemRegistryObject<ItemResource>> getDusts() {
         return Collections.unmodifiableMap(RESOURCE_DUST);
-    }
-    
-    private static <MAT extends EquipmentMaterial> void registerToolSet(MAT material) {
-        registerPickaxeItem(material);
-        registerAxeItem(material);
-        registerShovelItem(material);
-        registerHoeItem(material);
-        registerSwordItem(material);
     }
     
     private static <MAT extends EquipmentMaterial> ItemRegistryObject<BasePickaxeItem> registerPickaxeItem(MAT material) {

@@ -49,7 +49,7 @@ public class CalytrixBlocks {
                 LOGGER.info("type - {}, {}", type, name);
                 ORE_BLOCKS.put(oreData, registerOreBlock(name, oreData, type, tab));
             }
-            RAW_BLOCKS.put(oreData, registerRawBlock("block_of_raw_%s".formatted(oreData.resourceName()), oreData, tab));
+            RAW_BLOCKS.put(oreData, registerRawBlock("raw_%s_block".formatted(oreData.resourceName()), oreData, tab));
         }
         
         ORE_BLOCKS.forEach((d, o) -> {
@@ -101,5 +101,9 @@ public class CalytrixBlocks {
     
     public static void register(IEventBus eventBus) {
         BLOCKS.register(eventBus);
+    }
+    
+    private CalytrixBlocks() {
+        // Utility
     }
 }

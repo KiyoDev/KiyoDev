@@ -37,7 +37,6 @@ public class BlockStateProvider extends net.minecraftforge.client.model.generato
             final var blockObj = entry.getValue().getBlockObj();
             final var block = blockObj.get();
     
-            LOGGER.debug("register block model - {}", block);
             simpleBlock(block);
             simpleBlockItem(block, blockFile(block));
         }
@@ -48,7 +47,6 @@ public class BlockStateProvider extends net.minecraftforge.client.model.generato
             final var blockObj = entry.getValue().getBlockObj();
             final var block = blockObj.get();
     
-            LOGGER.debug("register block model - {}", block);
             simpleBlock(block);
             simpleBlockItem(block, blockFile(block));
         }

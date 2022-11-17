@@ -11,6 +11,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import calytrix.item.CalytrixItems;
 import calytrix.item.ItemRegistryObject;
 import calytrix.item.resources.ResourceType;
+import calytrix.material.EquipmentMaterial;
 
 import java.util.Map;
 import java.util.Objects;
@@ -35,14 +36,18 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
     }
     
     private void addToolsModels() {
-        addTools(ResourceType.ADAMANTINE);
-        addTools(ResourceType.MITHRIL);
+        addTools(EquipmentMaterial.ADAMANTINE);
+        addTools(EquipmentMaterial.MITHRIL);
     }
     
-    private void addTools(ResourceType resourceType) {
-        for(var tool : CalytrixItems.TOOLS_MULTIMAP.get(resourceType)) {
-            basicHandheldItem(tool.getItem());
-        }
+    private void addTools(EquipmentMaterial equipmentMaterial) {
+        var toolSet = CalytrixItems.TOOL_SETS_BY_RESOURCE_TYPE.get(equipmentMaterial);
+        
+        basicHandheldItem(toolSet.pickaxe().getItem());
+        basicHandheldItem(toolSet.axe().getItem());
+        basicHandheldItem(toolSet.shovel().getItem());
+        basicHandheldItem(toolSet.hoe().getItem());
+        basicHandheldItem(toolSet.sword().getItem());
     }
     
     private void addItems(Map<?, ? extends ItemRegistryObject<?>> items) {

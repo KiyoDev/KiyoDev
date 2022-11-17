@@ -7,8 +7,7 @@ import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.item.Rarity;
 
 import calytrix.util.CalytrixConstants;
-
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class ItemPropertiesBuilder {
     private int maxStackSize = 64;

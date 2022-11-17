@@ -1,6 +1,7 @@
 package calytrix.common;
 
 import calytrix.Calytrix;
+import calytrix.providers.loot_tables.BaseLootTableProvider;
 import calytrix.providers.models.BlockStateProvider;
 import calytrix.providers.models.ItemModelProvider;
 import calytrix.providers.recipes.ShapedRecipesProvider;
@@ -44,6 +45,7 @@ public class CalytrixDataGenerator {
         generator.addProvider(includeClient, new SmithingRecipesProvider(generator, existingFileHelper));
         
         // Loot
+        generator.addProvider(includeClient, new BaseLootTableProvider(generator, modId));
         
         // Models
         generator.addProvider(includeClient, new ItemModelProvider(generator, modId, existingFileHelper));

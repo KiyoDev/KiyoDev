@@ -27,7 +27,7 @@ public enum ToolTierType {
                             ModTags.Blocks.NEEDS_ADAMANTINE_TOOL,
                             () -> Ingredient.of(ResourceType.ADAMANTINE.getIngotTag()))),
     MITHRIL(ResourceType.MITHRIL,
-            registerTier(ResourceType.MITHRIL, 4, 1561, 35f, 3, 10,
+            registerTier(ResourceType.MITHRIL, 4, 1561, 45f, 3, 10,
                          ModTags.Blocks.NEEDS_MITHRIL_TOOL,
                          () -> Ingredient.of(ResourceType.MITHRIL.getIngotTag())));
     
