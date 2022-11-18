@@ -115,17 +115,19 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
     
     private <DATA extends IResource, OBJ extends IBlockRegistryObject> void addTags(
         Multimap<DATA, OBJ> items,
-        Multimap<ResourceType, TagKey<Item>> tagsByType,
+        Map<ResourceType, TagKey<Item>> tagsByType,
         TriConsumer<DATA, OBJ, ItemLike> consumer
     ) {
         items.forEach((data, itemObj) -> {
             final var item = itemObj.getItem();
             final var type = data.getResourceType();
-            final var tags = tagsByType.get(type);
+            final var tag = tagsByType.get(type);
+    
+            tag(tag).add(item);
             
-            for (var tag : tags) {
-                tag(tag).add(item);
-            }
+            // for (var tag : tags) {
+            //     tag(tag).add(item);
+            // }
             
             consumer.accept(data, itemObj, item);
         });

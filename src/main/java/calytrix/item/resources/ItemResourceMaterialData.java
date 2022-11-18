@@ -47,7 +47,7 @@ public enum ItemResourceMaterialData implements IItemData, IResource {
     }
     
     public String resourceName() {
-        return blockResourceData.resourceName();
+        return blockResourceData.getResourceName();
     }
     
     public static ItemResourceMaterialData fromType(ResourceType resourceType) {

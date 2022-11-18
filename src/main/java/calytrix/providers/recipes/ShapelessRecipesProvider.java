@@ -10,16 +10,18 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 import calytrix.Calytrix;
-import calytrix.block.CalytrixBlocks;
 import calytrix.block.ores.BlockOreData;
 import calytrix.block.resources.BlockResourceData;
 import calytrix.item.CalytrixItems;
 import calytrix.item.resources.ItemResourceMaterialData;
 import calytrix.util.ModTags;
+import com.mojang.logging.LogUtils;
+import org.slf4j.Logger;
 
 import java.util.function.Consumer;
 
 public class ShapelessRecipesProvider extends CalytrixRecipeProvider {
+    private static final Logger LOGGER = LogUtils.getLogger();
     
     public ShapelessRecipesProvider(
         DataGenerator dataGenerator,
@@ -34,7 +36,7 @@ public class ShapelessRecipesProvider extends CalytrixRecipeProvider {
             final var resourceType = entry.getKey();
             final var tag = entry.getValue();
             final var blockResourceData = BlockResourceData.fromType(resourceType);
-            final var resourceName = blockResourceData.resourceName();
+            final var resourceName = blockResourceData.getResourceName();
             final var result = CalytrixItems.getResourceIngots()
                                             .get(ItemResourceMaterialData.fromType(resourceType))
                                             .getItem();
@@ -47,7 +49,7 @@ public class ShapelessRecipesProvider extends CalytrixRecipeProvider {
             final var resourceType = entry.getKey();
             final var tag = entry.getValue();
             final var blockResourceData = BlockResourceData.fromType(resourceType);
-            final var resourceName = blockResourceData.resourceName();
+            final var resourceName = blockResourceData.getResourceName();
             final var result = CalytrixItems.getRawMaterials()
                                             .get(BlockOreData.fromType(resourceType))
                                             .getItem();

@@ -33,6 +33,7 @@ public class CalytrixBlocks {
     
     static {
         final var tab = CalytrixConstants.CALYTRIX_TAB;
+        
         for (var resourceData : BlockResourceData.values()) {
             RESOURCE_STORAGE_BLOCKS.put(resourceData, registerResourceBlock(resourceData, tab));
         }
@@ -42,19 +43,17 @@ public class CalytrixBlocks {
             for (var type : oreData.getTypes()) {
                 final String name;
                 if (type == BlockOreType.STONE) {
-                    name = "%s_ore".formatted(oreData.resourceName());
+                    name = "%s_ore".formatted(oreData.getResourceName());
                 } else {
-                    name = "%s_%s_ore".formatted(type.getPrefix(), oreData.resourceName());
+                    name = "%s_%s_ore".formatted(type.getPrefix(), oreData.getResourceName());
                 }
                 LOGGER.info("type - {}, {}", type, name);
                 ORE_BLOCKS.put(oreData, registerOreBlock(name, oreData, type, tab));
             }
-            RAW_BLOCKS.put(oreData, registerRawBlock("raw_%s_block".formatted(oreData.resourceName()), oreData, tab));
+            RAW_BLOCKS.put(oreData, registerRawBlock("raw_%s_block".formatted(oreData.getResourceName()), oreData, tab));
         }
         
-        ORE_BLOCKS.forEach((d, o) -> {
-            LOGGER.info("ore blocks - {}, [{}]", d, o.toString());
-        });
+        ORE_BLOCKS.forEach((d, o) -> LOGGER.info("ore blocks - {}, [{}]", d, o.toString()));
     }
     
     private static BlockRegistryObject<BlockResource, Item> registerResourceBlock(

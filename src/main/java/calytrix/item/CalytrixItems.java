@@ -7,7 +7,6 @@ import calytrix.block.ores.BlockOreData;
 import calytrix.item.resources.ItemRawMaterial;
 import calytrix.item.resources.ItemResource;
 import calytrix.item.resources.ItemResourceMaterialData;
-import calytrix.item.resources.ResourceType;
 import calytrix.item.tools.BaseAxeItem;
 import calytrix.item.tools.BaseHoeItem;
 import calytrix.item.tools.BasePickaxeItem;
@@ -76,7 +75,7 @@ public class CalytrixItems {
     }
     
     private static ItemRegistryObject<ItemRawMaterial> registerResourceRaw(BlockOreData ore) {
-        return ITEMS.registerItem("raw_%s".formatted(ore.resourceName()),
+        return ITEMS.registerItem("raw_%s".formatted(ore.getResourceName()),
                                   () -> new ItemRawMaterial(ore));
     }
     

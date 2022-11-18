@@ -57,7 +57,7 @@ public class ShapedRecipesProvider extends CalytrixRecipeProvider {
             final var blockObj = CalytrixBlocks.getRawBlocks().get(blockResourceData);
     
             compactRecipe(consumer, tag, blockObj.getBlock(),
-                          Calytrix.resourceLocation("compact/block_of_raw_%s".formatted(blockResourceData.resourceName())));
+                          Calytrix.resourceLocation("compact/block_of_raw_%s".formatted(blockResourceData.getResourceName())));
         }
     }
     

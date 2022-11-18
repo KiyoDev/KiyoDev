@@ -19,6 +19,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class BaseLootTableProvider extends LootTableProvider {
+    
     private final String modId;
     
     public BaseLootTableProvider(DataGenerator dataGenerator, String modId) {
@@ -28,16 +29,15 @@ public class BaseLootTableProvider extends LootTableProvider {
     
     @Override
     protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootContextParamSet>> getTables() {
-        final var tables = new ArrayList<>(super.getTables());
-        
-        //
+        final List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootContextParamSet>> tables =
+            new ArrayList<>();
+    
         tables.add(Pair.of(BaseBlockLoot::new, LootContextParamSets.BLOCK));
-        
+    
         return tables;
     }
     
     @Override
     protected void validate(Map<ResourceLocation, LootTable> map, ValidationContext validationtracker) {
-        super.validate(map, validationtracker);
     }
 }

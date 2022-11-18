@@ -2,11 +2,6 @@ package calytrix.util;
 
 import calytrix.Calytrix;
 import calytrix.block.ores.BlockOreData;
-import calytrix.block.resources.BlockResourceData;
-import calytrix.item.CalytrixItems;
-import calytrix.item.ItemRegistryObject;
-import calytrix.item.resources.ItemRawMaterial;
-import calytrix.item.resources.ItemResourceMaterialData;
 import calytrix.item.resources.ResourceType;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
@@ -29,16 +24,40 @@ public class ModTags {
         public static final TagKey<Block> NEEDS_ADAMANTINE_TOOL = tag("needs_adamantine_tool");
         public static final TagKey<Block> NEEDS_MITHRIL_TOOL = tag("needs_mithril_tool");
         
-        private static final Map<BlockResourceData, TagKey<Block>> RESOURCE_STORAGE_BLOCK_TAGS_BY_TYPE = new LinkedHashMap<>();
+        public static final TagKey<Block> ORES_IN_GROUND_END = forgeTag("ores_in_ground/end_stone");
+        
+        private static final Map<ResourceType, TagKey<Block>> RESOURCE_STORAGE_BLOCK_TAGS_BY_TYPE = new LinkedHashMap<>();
+        private static final Map<ResourceType, TagKey<Block>> ORE_BLOCK_TAGS_BY_TYPE = new LinkedHashMap<>();
+        private static final Map<ResourceType, TagKey<Block>> RAW_STORAGE_BLOCK_TAGS_BY_TYPE = new LinkedHashMap<>();
+        // private static final Map<BlockResourceData, TagKey<Block>> RESOURCE_STORAGE_BLOCK_TAGS_BY_TYPE = new LinkedHashMap<>();
         
         static {
-            for (var block : BlockResourceData.values()) {
-                RESOURCE_STORAGE_BLOCK_TAGS_BY_TYPE.put(block, forgeTag("storage_blocks/%s".formatted(block.resourceName())));
+            for (var resourceType : ResourceType.values()) {
+                RESOURCE_STORAGE_BLOCK_TAGS_BY_TYPE.put(resourceType,
+                                                        forgeTag("storage_blocks/%s".formatted(resourceType.getResourceName())));
             }
+            
+            for (var ore : BlockOreData.values()) {
+                final var resourceType = ore.getResourceType();
+                final var resourceName = ore.getResourceName();
+                ORE_BLOCK_TAGS_BY_TYPE.put(resourceType, forgeTag("ores/%s".formatted(resourceName)));
+                RAW_STORAGE_BLOCK_TAGS_BY_TYPE.put(resourceType, forgeTag("storage_blocks/raw_%s".formatted(resourceName)));
+            }
+            // for (var block : BlockResourceData.values()) {
+            //     RESOURCE_STORAGE_BLOCK_TAGS_BY_TYPE.put(block, forgeTag("storage_blocks/%s".formatted(block.resourceName())));
+            // }
         }
         
-        public static Map<BlockResourceData, TagKey<Block>> resourceForgeTagsByType() {
+        public static Map<ResourceType, TagKey<Block>> resourceForgeTags() {
             return Collections.unmodifiableMap(RESOURCE_STORAGE_BLOCK_TAGS_BY_TYPE);
+        }
+        
+        public static Map<ResourceType, TagKey<Block>> oresForgeTags() {
+            return Collections.unmodifiableMap(ORE_BLOCK_TAGS_BY_TYPE);
+        }
+        
+        public static Map<ResourceType, TagKey<Block>> rawStorageBlockForgeTags() {
+            return Collections.unmodifiableMap(RAW_STORAGE_BLOCK_TAGS_BY_TYPE);
         }
         
         private static TagKey<Block> tag(String name) {
@@ -58,24 +77,26 @@ public class ModTags {
         private static final Map<ResourceType, TagKey<Item>> RESOURCE_STORAGE_BLOCK_TAGS_BY_TYPE = new LinkedHashMap<>();
         private static final Map<ResourceType, TagKey<Item>> RAW_STORAGE_BLOCK_TAGS_BY_TYPE = new LinkedHashMap<>();
         private static final Map<ResourceType, TagKey<Item>> RAW_MATERIAL_TAGS_BY_TYPE = new LinkedHashMap<>();
-        private static final Multimap<ResourceType, TagKey<Item>> ORE_BLOCK_TAGS_BY_TYPE = ArrayListMultimap.create();
+        private static final Map<ResourceType, TagKey<Item>> ORE_BLOCK_TAGS_BY_TYPE = new LinkedHashMap<>();
         
         static {
-            for (var ingot : ItemResourceMaterialData.values()) {
-                RESOURCE_INGOTS_TAGS_BY_TYPE.put(ingot.getResourceType(),
-                                                 forgeTag("ingots/%s_ingot".formatted(ingot.resourceName())));
+            for (var resource : ResourceType.values()) {
+                if (resource == ResourceType.ORICHALCUM) {
+                    continue;
+                }
+                RESOURCE_INGOTS_TAGS_BY_TYPE.put(resource,
+                                                 forgeTag("ingots/%s".formatted(resource.getResourceName())));
+                RESOURCE_STORAGE_BLOCK_TAGS_BY_TYPE.put(resource,
+                                                        forgeTag("storage_blocks/%s".formatted(resource.getResourceName())));
             }
-            
-            for (var block : BlockResourceData.values()) {
-                RESOURCE_STORAGE_BLOCK_TAGS_BY_TYPE.put(block.getResourceType(),
-                                                        forgeTag("storage_blocks/%s_block".formatted(block.resourceName())));
-            }
-            
-            // for (var block : BlockOreData.values()) {
-            //     // final ItemRegistryObject<ItemRawMaterial> itemRawMaterialItemRegistryObject =
-            //     //     CalytrixItems.getRawMaterials().get(block);
-            //     RAW_STORAGE_BLOCK_TAGS_BY_TYPE.put(block.getResourceType(),
-            //                                             forgeTag("storage_blocks/raw_%s".formatted(block.resourceName())));
+            // for (var ingot : ItemResourceMaterialData.values()) {
+            //     RESOURCE_INGOTS_TAGS_BY_TYPE.put(ingot.getResourceType(),
+            //                                      forgeTag("ingots/%s".formatted(ingot.resourceName())));
+            // }
+            //
+            // for (var block : BlockResourceData.values()) {
+            //     RESOURCE_STORAGE_BLOCK_TAGS_BY_TYPE.put(block.getResourceType(),
+            //                                             forgeTag("storage_blocks/%s".formatted(block.resourceName())));
             // }
             
             addOreTags();
@@ -89,7 +110,7 @@ public class ModTags {
             return Collections.unmodifiableMap(RESOURCE_STORAGE_BLOCK_TAGS_BY_TYPE);
         }
         
-        public static Multimap<ResourceType, TagKey<Item>> oreBlocksTagsByType() {
+        public static Map<ResourceType, TagKey<Item>> oreBlocksTagsByType() {
             return ORE_BLOCK_TAGS_BY_TYPE;
         }
         
@@ -111,13 +132,11 @@ public class ModTags {
         
         private static void oreAndRawTags() {
             for (var ore : BlockOreData.values()) {
-                for (var type : ore.getTypes()) {
-                    ORE_BLOCK_TAGS_BY_TYPE.put(ore.getResourceType(), forgeTag("ores/%s".formatted(ore.resourceName())));
-                }
+                ORE_BLOCK_TAGS_BY_TYPE.put(ore.getResourceType(), forgeTag("ores/%s".formatted(ore.getResourceName())));
                 RAW_MATERIAL_TAGS_BY_TYPE.put(ore.getResourceType(),
-                                              forgeTag("raw_materials/%s".formatted(ore.resourceName())));
+                                              forgeTag("raw_materials/%s".formatted(ore.getResourceName())));
                 RAW_STORAGE_BLOCK_TAGS_BY_TYPE.put(ore.getResourceType(),
-                                                   forgeTag("storage_blocks/raw_%s".formatted(ore.resourceName())));
+                                                   forgeTag("storage_blocks/raw_%s".formatted(ore.getResourceName())));
             }
         }
         
