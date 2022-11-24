@@ -1,0 +1,27 @@
+{
+  "item.calytrix.adamantine_ingot": "Adamantine Ingot",
+  "item.calytrix.raw_adamantine": "Raw Adamantine",
+  "item.calytrix.adamantine_dust": "Adamantine Dust",
+  "item.calytrix.mithril_ingot": "Mithril Ingot",
+  "item.calytrix.raw_mithril": "Raw Mithril",
+  "item.calytrix.mithril_dust": "Mithril Dust",
+
+  "item.calytrix.adamantine_pickaxe": "Adamantine Pickaxe",
+  "item.calytrix.adamantine_shovel": "Adamantine Shovel",
+  "item.calytrix.adamantine_hoe": "Adamantine Hoe",
+  "item.calytrix.adamantine_axe": "Adamantine Axe",
+  "item.calytrix.adamantine_sword": "Adamantine Sword",
+  "item.calytrix.mithril_pickaxe": "Mithril Pickaxe",
+  "item.calytrix.mithril_shovel": "Mithril Shovel",
+  "item.calytrix.mithril_hoe": "Mithril Hoe",
+  "item.calytrix.mithril_axe": "Mithril Axe",
+  "item.calytrix.mithril_sword": "Mithril Sword",
+
+  "block.calytrix.block_of_adamantine": "Block of Adamantine",
+  "block.calytrix.raw_adamantine_block": "Block of Raw Adamantine",
+  "block.calytrix.deepslate_adamantine_ore": "Deepslate Adamantine Ore",
+  "block.calytrix.block_of_mithril": "Block of Mithril",
+  "block.calytrix.raw_mithril_block": "Block of Raw Mithril",
+  "block.calytrix.deepslate_mithril_ore": "Deepslate Mithril Ore",
+  "block.calytrix.mithril_ore": "Mithril Ore"
+}
