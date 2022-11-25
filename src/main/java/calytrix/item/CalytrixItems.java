@@ -7,6 +7,7 @@ import calytrix.block.ores.BlockOreData;
 import calytrix.item.resources.ItemRawMaterial;
 import calytrix.item.resources.ItemResource;
 import calytrix.item.resources.ItemResourceMaterialData;
+import calytrix.item.resources.ResourceType;
 import calytrix.item.tools.BaseAxeItem;
 import calytrix.item.tools.BaseHoeItem;
 import calytrix.item.tools.BasePickaxeItem;
@@ -89,6 +90,18 @@ public class CalytrixItems {
     
     public static Map<ItemResourceMaterialData, ItemRegistryObject<ItemResource>> getDusts() {
         return Collections.unmodifiableMap(RESOURCE_DUST);
+    }
+    
+    public static ItemResource getResource(ResourceType resourceType) {
+        return RESOURCE_INGOTS.get(ItemResourceMaterialData.fromType(resourceType)).getItem();
+    }
+    
+    public static ItemRawMaterial getRawMaterial(ResourceType resourceType) {
+        return RESOURCE_RAW.get(BlockOreData.fromType(resourceType)).getItem();
+    }
+    
+    public static Item getDust(ResourceType resourceType) {
+        return RESOURCE_DUST.get(ItemResourceMaterialData.fromType(resourceType)).getItem();
     }
     
     private static <MAT extends EquipmentMaterial> ItemRegistryObject<BasePickaxeItem> registerPickaxeItem(MAT material) {

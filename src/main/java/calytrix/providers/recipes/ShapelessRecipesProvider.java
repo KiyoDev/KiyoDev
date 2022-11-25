@@ -14,11 +14,14 @@ import calytrix.block.ores.BlockOreData;
 import calytrix.block.resources.BlockResourceData;
 import calytrix.item.CalytrixItems;
 import calytrix.item.resources.ItemResourceMaterialData;
+import calytrix.item.resources.ResourceType;
 import calytrix.util.ModTags;
 import com.mojang.logging.LogUtils;
 import org.slf4j.Logger;
 
+import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class ShapelessRecipesProvider extends CalytrixRecipeProvider {
     private static final Logger LOGGER = LogUtils.getLogger();
@@ -32,44 +35,33 @@ public class ShapelessRecipesProvider extends CalytrixRecipeProvider {
     
     @Override
     protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
-        for (var entry : ModTags.Items.resourceStorageBlocksTagsByType().entrySet()) {
-            final var resourceType = entry.getKey();
-            final var tag = entry.getValue();
-            final var blockResourceData = BlockResourceData.fromType(resourceType);
-            final var resourceName = blockResourceData.getResourceName();
-            final var result = CalytrixItems.getResourceIngots()
-                                            .get(ItemResourceMaterialData.fromType(resourceType))
-                                            .getItem();
-            
-            decompress(consumer, tag, result, "%s_ingot".formatted(resourceName),
-                       Calytrix.resourceLocation("%s_ingot_from_%s_block".formatted(resourceName, resourceName)));
-        }
+        uncraftStorageBlock(consumer, ModTags.Items.resourceStorageBlocksTagsByType(), "%s_ingot", "%s_ingot_from_%s_block",
+                            CalytrixItems::getResource);
         
-        for (var entry : ModTags.Items.rawStorageBlocksTagsByType().entrySet()) {
-            final var resourceType = entry.getKey();
-            final var tag = entry.getValue();
-            final var blockResourceData = BlockResourceData.fromType(resourceType);
-            final var resourceName = blockResourceData.getResourceName();
-            final var result = CalytrixItems.getRawMaterials()
-                                            .get(BlockOreData.fromType(resourceType))
-                                            .getItem();
-            
-            decompress(consumer, tag, result, "raw_%s".formatted(resourceName),
-                       Calytrix.resourceLocation("raw_%s_from_raw_%s_block".formatted(resourceName, resourceName)));
-        }
+        uncraftStorageBlock(consumer, ModTags.Items.rawStorageBlocksTagsByType(), "raw_%s", "raw_%s_from_raw_%s_block",
+                            CalytrixItems::getRawMaterial);
     }
     
-    private static <ITEM extends ItemLike> void decompress(
+    private <ITEM extends ItemLike> void uncraftStorageBlock(
         Consumer<FinishedRecipe> consumer,
-        TagKey<Item> itemTag,
-        ITEM result,
+        Map<ResourceType, TagKey<Item>> tags,
         String group,
-        ResourceLocation resourceLocation
+        String recipeNameFormat,
+        Function<ResourceType, ITEM> function
     ) {
-        ShapelessRecipeBuilder.shapeless(result, 9)
-                              .group(group)
-                              .requires(itemTag)
-                              .unlockedBy("has_%s".formatted(itemTag.location().getPath()), has(itemTag))
-                              .save(consumer, resourceLocation);
+        for (var entry : tags.entrySet()) {
+            final var resourceType = entry.getKey();
+            final var tag = entry.getValue();
+            final var blockResourceData = BlockResourceData.fromType(resourceType);
+            final var resourceName = blockResourceData.getResourceName();
+            final var result = function.apply(resourceType);
+            
+            ShapelessRecipeBuilder.shapeless(result, 9)
+                                  .group(group.formatted(resourceName))
+                                  .requires(tag)
+                                  .unlockedBy("has_%s".formatted(tag.location().getPath()), has(tag))
+                                  .save(consumer, Calytrix.resourceLocation(recipeNameFormat.formatted(resourceName,
+                                                                                                       resourceName)));
+        }
     }
 }

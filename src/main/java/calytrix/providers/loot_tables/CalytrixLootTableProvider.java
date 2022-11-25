@@ -11,7 +11,6 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import calytrix.providers.loot_tables.blocks.BaseBlockLoot;
 import com.mojang.datafixers.util.Pair;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -29,12 +28,11 @@ public class CalytrixLootTableProvider extends LootTableProvider {
     
     @Override
     protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootContextParamSet>> getTables() {
-        final List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootContextParamSet>> tables =
-            new ArrayList<>();
+        final LootTableBuilder tableBuilder = new LootTableBuilder();
     
-        tables.add(Pair.of(BaseBlockLoot::new, LootContextParamSets.BLOCK));
+        tableBuilder.add(Pair.of(BaseBlockLoot::new, LootContextParamSets.BLOCK));
     
-        return tables;
+        return tableBuilder.build();
     }
     
     @Override

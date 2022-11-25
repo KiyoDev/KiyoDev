@@ -10,7 +10,6 @@ import calytrix.block.CalytrixBlocks;
 import calytrix.block.ores.BlockOreData;
 import calytrix.item.CalytrixItems;
 import calytrix.util.IBlockData;
-import calytrix.util.IBlockRegistryObject;
 import com.mojang.logging.LogUtils;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -25,9 +24,6 @@ public class BaseBlockLoot extends BlockLoot {
     
     @Override
     protected void addTables() {
-        // selfDropTable(CalytrixBlocks.BLOCKS.getAllRegisteredBlocks());
-        // CalytrixBlocks.BLOCKS.getAllRegisteredBlocks().forEach(b -> createSingleItemTable(b.getBlock()));
-        
         CalytrixBlocks.getResourceStorageBlocks().forEach(this::createSelfDrop);
         CalytrixBlocks.getRawBlocks().forEach(this::createSelfDrop);
         CalytrixBlocks.getOreBlocks().forEach(this::createOreDrop);
@@ -45,19 +41,11 @@ public class BaseBlockLoot extends BlockLoot {
         return knownBlocks;
     }
     
-    // Block block, LootItemCondition.Builder builder, LootPoolEntryContainer.Builder<?> container
-    private void selfDropTable(Set<IBlockRegistryObject> blocks) {
-        // createSelfDropDispatchTable();
-        
-    }
-    
     private <BLOCK extends Block> void createSelfDrop(IBlockData data, BlockRegistryObject<BLOCK, Item> blockObj) {
         dropSelf(blockObj.getBlock());
     }
     
     private <BLOCK extends Block> void createOreDrop(BlockOreData data, BlockRegistryObject<BLOCK, Item> blockObj) {
-        LOGGER.debug("ore: { data: {}, block:{} }", data, blockObj.getBlock());
-        
         final var ore = blockObj.getBlock();
         final var rawMaterial = CalytrixItems.getRawMaterials().get(data).getItem();
         
